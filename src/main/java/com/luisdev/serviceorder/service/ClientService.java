@@ -1,6 +1,7 @@
 package com.luisdev.serviceorder.service;
 
 import com.luisdev.serviceorder.entity.Client;
+import com.luisdev.serviceorder.exception.ClientNotFoundException;
 import com.luisdev.serviceorder.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +30,22 @@ public class ClientService {
 
     public Client getClientById(Long id){
         return clientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
+                .orElseThrow(() -> new RuntimeException(id));
     }
 
     public void deleteClient(Long id){
         clientRepository.deleteById(id);
+    }
+
+    public Client updateClient(Long id, Client updatedClient){
+
+        Client existingClient = clientRepository.findById(id)
+                .orElseThrow(() -> new ClientNotFoundException(id));
+
+        existingClient.setName(updatedClient.getName());
+        existingClient.setEmail(updatedClient.getEmail());
+        existingClient.setPhone(updatedClient.getPhone());
+
+        return clientRepository.save(existingClient);
     }
 }

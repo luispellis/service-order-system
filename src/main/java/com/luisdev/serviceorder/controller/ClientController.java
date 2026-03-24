@@ -7,6 +7,7 @@ import com.luisdev.serviceorder.dto.ClientRequestDTO;
 import com.luisdev.serviceorder.dto.ClientResponseDTO;
 import com.luisdev.serviceorder.mapper.ClientMapper;
 import jakarta.validation.Valid;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -50,6 +51,16 @@ public class ClientController {
     @DeleteMapping("/{id}")
     public void deleteClient(@PathVariable Long id){
         clientService.deleteClient(id);
+    }
+
+    @PutMapping("/{id}")
+    public ClientResponseDTO updateClient(
+            @PathVariable Long id,
+            @RequestBody @Valid ClientRequestDTO dto
+    ){
+        var client = ClientMapper.toEntity(dto);
+        var updated = clientService.updateClient(id, client);
+        return ClientMapper.toResponse(updated);
     }
 
 }

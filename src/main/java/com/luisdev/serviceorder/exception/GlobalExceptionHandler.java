@@ -11,16 +11,9 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handlerValidationErrors(MethodArgumentNotValidException ex){
-
-        List<String> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> error.getDefaultMessage())
-                .toList();
-
-        return new ErrorResponse("Validation failed", errors);
+    @ExceptionHandler(ClientNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleClientNotFound(ClientNotFoundException ex){
+        return new ErrorResponse(ex.getMessage(), null);
     }
 }
