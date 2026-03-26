@@ -30,7 +30,7 @@ public class ClientService {
 
     public Client getClientById(Long id){
         return clientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(id));
+                .orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
     }
 
     public void deleteClient(Long id){
